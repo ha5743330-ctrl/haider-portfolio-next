@@ -1,0 +1,13 @@
+.adm{--ink:#101114;--p:#171920;--line:#2a2d37;--fg:#f3efe6;--mute:#8d8a82;--y:#ffd23f;--red:#ff6b6b;--ok:#7bd88f;color-scheme:dark;box-sizing:border-box;min-height:100svh;background:var(--ink);color:var(--fg);font:400 16px/1.5 var(--font-dm),system-ui,sans-serif}
+.adm *,.adm *:before,.adm *:after{box-sizing:inherit}
+.adm h1,.adm h2,.adm h3{font-family:var(--font-unbounded),sans-serif;font-weight:800;letter-spacing:-.03em;margin:0}
+.adm button,.adm input,.adm select,.adm textarea{font:inherit;color:inherit}
+.adm :focus-visible{outline:2px solid var(--y);outline-offset:2px}
+.adm .btn{background:var(--y);color:var(--ink);border:0;border-radius:99px;padding:10px 18px;font-weight:500;cursor:pointer}
+.adm .btn:disabled{opacity:.6;cursor:default}
+.adm input,.adm select,.adm textarea{width:100%;background:var(--ink);border:1px solid var(--line);border-radius:10px;padding:12px}
+.adm label{display:grid;gap:6px;font-size:14px;color:var(--mute);margin-bottom:14px}
+.adm .login{min-height:100svh;display:grid;place-items:center;padding:22px}
+.adm .box{background:var(--p);border:1px solid var(--line);border-radius:18px;padding:30px;width:min(400px,100%)}
+.adm .box h1{font-size:26px;margin-bottom:6px}.adm .box p{color:var(--mute);margin:0 0 22px;font-size:15px}
+.adm .box .err{color:var(--red);font-size:14px;margin:12px 0 0}
