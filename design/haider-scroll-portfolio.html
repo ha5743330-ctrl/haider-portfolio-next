@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Haider Ali – Every website has two sides</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;800&family=DM+Sans:wght@400;500&display=swap">
+<style>
+:root{--ink:#101114;--paper:#f3efe6;--y:#ffd23f;--mute:#8d8a82;color-scheme:dark;box-sizing:border-box}
+*,*:before,*:after{box-sizing:inherit}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--paper);font:400 17px/1.6 "DM Sans",system-ui,sans-serif;overflow-x:hidden}
+h1,h2,h3,.d{font-family:Unbounded,system-ui,sans-serif;font-weight:800;letter-spacing:-.04em;line-height:1;margin:0}
+a{color:inherit}p{margin:0 0 14px;max-width:56ch}
+:focus-visible{outline:2px solid var(--y);outline-offset:3px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+.btn{display:inline-block;background:var(--y);color:var(--ink);padding:15px 26px;border-radius:99px;font:500 16px "DM Sans",sans-serif;text-decoration:none;border:0;cursor:pointer}
+/* progress + header */
+#prog{position:fixed;left:0;right:0;top:0;height:3px;z-index:30;background:#ffffff1a}
+#prog i{display:block;height:100%;width:0;background:var(--y)}
+header{position:fixed;top:3px;left:0;right:0;z-index:25;mix-blend-mode:difference;color:#fff;padding-top:env(safe-area-inset-top,0px)}
+header .wrap{display:flex;justify-content:space-between;align-items:center;height:60px;font-size:14px}
+header b{font:800 15px Unbounded,sans-serif}header a{text-decoration:none}header span{opacity:.8}
+#pct{font:500 13px Unbounded,sans-serif;min-width:3.5ch;text-align:right}
+/* hero */
+.hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:100px 0 60px}
+.hero h1{font-size:clamp(38px,9vw,128px)}
+.hero h1 span{display:block;overflow:hidden}.hero h1 em{display:inline-block;font-style:normal;transform:translateY(110%);animation:up .9s cubic-bezier(.2,.8,.2,1) forwards}
+.hero h1 span:nth-child(2) em{animation-delay:.12s;color:var(--y)}.hero h1 span:nth-child(3) em{animation-delay:.24s}
+@keyframes up{to{transform:none}}
+.hero p{margin:30px 0;font-size:19px;color:#cfcabd}
+.row{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.hint{color:var(--mute);font-size:14px}
+/* pinned sections */
+.pin{position:relative}.stick{position:sticky;top:0;height:100svh;overflow:hidden}
+/* story */
+.story{height:480vh;background:#101114;transition:background .6s}
+.story .stick{display:block}.story .wrap{width:100%}
+.stage{position:absolute;left:0;right:0;opacity:0;transform:translateY(30px);transition:opacity .5s,transform .5s;pointer-events:none}
+.stage.on{opacity:1;transform:none}
+.stage h2{font-size:clamp(46px,14.5vw,240px);line-height:.95}
+.stage p{font-size:20px;margin-top:20px}
+.dots{position:absolute;left:22px;right:22px;bottom:calc(30px + env(safe-area-inset-bottom,0px));display:flex;flex-wrap:wrap;gap:8px;font:500 11px Unbounded,sans-serif}
+.dots span{opacity:.35;padding:5px 10px;border:1px solid currentColor;border-radius:99px}.dots .on{opacity:1;background:var(--y);color:var(--ink);border-color:var(--y)}
+/* split */
+.split{height:300vh;background:var(--paper);color:var(--ink)}
+.layer{position:absolute;inset:0;display:grid;place-items:center;padding:90px 22px 40px}
+.back{background:var(--ink);color:#d9d5c8;clip-path:inset(0 calc(100% - var(--p,0)*100%) 0 0)}
+.title{position:absolute;top:80px;left:22px;font:500 13px Unbounded,sans-serif}
+.card{width:min(560px,100%);border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 20px 60px #0003;color:var(--ink)}
+.card .bar{height:10px;background:var(--y)}.card .in{padding:26px}.card h3{font-size:26px;margin-bottom:10px}.card p{color:#555}
+.card .b{display:inline-block;background:var(--ink);color:#fff;padding:10px 18px;border-radius:99px;font-size:14px}
+pre{margin:0;font:14px/1.7 ui-monospace,Menlo,monospace;background:#1b1d22;border:1px solid #2c2f37;border-radius:14px;padding:24px;width:min(560px,100%);overflow:auto;color:#d9d5c8}
+pre b{color:var(--y);font-weight:400}pre i{color:#7ed0a8;font-style:normal}
+.split h2{position:absolute;bottom:30px;left:22px;font-size:clamp(22px,4vw,44px);z-index:2;mix-blend-mode:difference;color:#fff}
+/* horizontal */
+.hs{background:var(--paper);color:var(--ink)}
+.hs .stick{display:flex;flex-direction:column;justify-content:center;gap:28px}
+.hs h2{font-size:clamp(30px,5vw,60px);padding:0 22px}
+.track{display:flex;gap:22px;padding:0 22px;will-change:transform;width:max-content}
+.proj{width:min(78vw,520px);flex:none}
+.shot{aspect-ratio:16/11;border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px;color:#fff}
+.shot u{display:block;width:9px;height:9px;border-radius:50%;background:#fff6;box-shadow:16px 0 #fff6,32px 0 #fff6;margin-bottom:6px}
+.shot s{display:block;background:#ffffff26;border-radius:8px;flex:1}.shot s:first-of-type{flex:.4;background:#ffffff4d}
+.proj h3{font-size:24px;margin:16px 0 6px}.proj p{color:#555;font-size:15px}.proj small{color:#7a6a00;font-weight:500}
+/* mission */
+.mission{padding:110px 0;background:var(--ink)}
+.mission h2,.facts h2{font-size:clamp(30px,5vw,64px);margin-bottom:30px}
+.tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:26px}
+.tabs button{background:none;border:1px solid #ffffff40;color:inherit;padding:10px 18px;border-radius:99px;font:500 15px "DM Sans",sans-serif;cursor:pointer}
+.tabs button[aria-selected=true]{background:var(--y);color:var(--ink);border-color:var(--y)}
+.panel{border:1px solid #ffffff26;border-radius:16px;padding:30px;max-width:720px}
+.panel h3{font-size:30px;margin-bottom:12px}.tags{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 22px}.tags span{background:#ffffff14;padding:4px 12px;border-radius:99px;font-size:14px}
+/* facts */
+.facts{background:var(--y);color:var(--ink);padding:100px 0;overflow:hidden}
+.big{font:800 clamp(44px,12.5vw,200px)/1 Unbounded,sans-serif;letter-spacing:-.05em}
+.nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:30px;margin-top:50px}
+.nums b{display:block;font:800 clamp(40px,6vw,76px)/1 Unbounded,sans-serif}
+/* contact */
+.contact{padding:110px 0}
+form{display:grid;gap:14px;max-width:560px}
+label{display:grid;gap:6px;font-size:14px;color:#bdb8aa}
+input,select,textarea{background:#1a1c21;border:1px solid #33363e;border-radius:10px;padding:14px;color:var(--paper);font:inherit}
+textarea{min-height:110px}
+footer{border-top:1px solid #ffffff1f;padding:26px 0 40px;color:var(--mute);font-size:14px}footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.glow{position:fixed;left:0;top:0;width:440px;height:440px;margin:-220px 0 0 -220px;border-radius:50%;background:radial-gradient(#ffd23f2b,transparent 65%);pointer-events:none;z-index:1}
+.mq{border-block:1px solid #ffffff1f;overflow:hidden;white-space:nowrap;padding:16px 0}.mq div{display:inline-block;animation:mq 30s linear infinite}.mq span{font:500 20px Unbounded,sans-serif;margin-right:42px;color:var(--mute)}@keyframes mq{to{transform:translateX(-50%)}}
+.about{padding:140px 0 100px;background:var(--ink)}
+.rv{font:500 clamp(26px,4.8vw,58px)/1.22 Unbounded,sans-serif;letter-spacing:-.035em;max-width:none}.rv span{opacity:.16;transition:opacity .35s}.rv span.on{opacity:1}
+.tl{position:relative;margin-top:34px;padding-left:36px;max-width:720px}.tl:before{content:"";position:absolute;left:6px;top:8px;bottom:0;width:2px;background:#ffffff26}.tl>i{position:absolute;left:6px;top:8px;width:2px;height:calc(var(--t,0)*100% - 8px);background:var(--y);transition:height .2s}
+.tl div{position:relative;padding-bottom:34px}.tl div:before{content:"";position:absolute;left:-36px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--ink);border:2px solid #ffffff55;transition:.3s}.tl div.on:before{background:var(--y);border-color:var(--y);transform:scale(1.15)}
+.tl b{font:500 13px Unbounded,sans-serif;color:var(--y)}.tl h4{font:800 22px Unbounded,sans-serif;letter-spacing:-.03em;margin:6px 0}.tl p{color:#bdb8aa;margin:0}
+.proj .shot{transition:transform .25s ease-out;box-shadow:0 18px 40px #0003}
+.rm .rv span{opacity:1}.rm .glow{display:none}.rm .tl>i{display:none}
+.me{width:min(420px,100%);aspect-ratio:4/5;margin-top:50px;position:relative;overflow:hidden;border-radius:20px;background:linear-gradient(160deg,#3b3329,#1d1a17);--q:1;clip-path:inset(calc((1 - var(--q))*28%) calc((1 - var(--q))*28%) round 20px)}
+.me img{display:none;width:100%;height:100%;object-fit:cover;transform:scale(calc(1.3 - var(--q)*.3));filter:grayscale(calc(1 - var(--q)))}
+.ph{position:absolute;inset:0;display:grid;place-content:center;text-align:center;color:var(--mute);font:500 18px Unbounded,sans-serif;padding:20px}.ph small{font:400 13px "DM Sans",sans-serif;margin-top:8px}
+.shot.img{padding:0;overflow:hidden}.shot img{width:100%;height:100%;object-fit:cover;display:block}
+.rm .me{clip-path:none}.rm .me img{transform:none;filter:none}
+/* reduced motion: everything static and readable */
+.rm .pin{height:auto!important}.rm .stick{position:static;height:auto;padding:70px 0;overflow:visible}
+.rm .stage{position:static;opacity:1;transform:none;margin-bottom:40px}.rm .stage h2{font-size:56px}.rm .dots{display:none}
+.rm .back{clip-path:none;position:static;margin-top:20px}.rm .layer{position:static;padding:20px}
+.rm .track{overflow-x:auto;width:auto}.rm .hero h1 em{animation:none;transform:none}
+</style>
+</head>
+<body>
+<div id="prog"><i></i></div>
+<header><div class="wrap"><a href="#top"><b>Haider Ali</b></a><span id="clock">Islamabad</span><span id="pct">0%</span></div></header>
+
+<main id="top">
+<section class="hero"><div class="wrap">
+  <h1><span><em>Every website</em></span><span><em>has two sides.</em></span><span><em>I build both.</em></span></h1>
+  <p>I’m Haider, a full-stack developer in Islamabad. I make the part people see, and the part that keeps it running.</p>
+  <div class="row"><a class="btn" href="#contact">Start a project</a><span class="hint">Scroll down to see how it works</span></div>
+</div></section>
+
+<div class="mq" aria-hidden="true"><div id="mq"></div></div>
+
+<section class="story pin" id="story"><div class="stick"><div class="wrap" style="position:relative;height:100%">
+  <div id="stages" style="position:relative;height:100%;display:grid;align-items:center"></div>
+  <div class="dots" id="sdots"></div>
+</div></div></section>
+
+<section class="split pin" id="split"><div class="stick">
+  <div class="layer front"><div class="title">Front: what visitors see</div>
+    <div class="card"><div class="bar"></div><div class="in"><h3>Ali’s Bakery</h3><p>Fresh bread, baked at 5 a.m. Order online and pick up today.</p><span class="b">Order now</span></div></div></div>
+  <div class="layer back"><div class="title" style="color:#ffd23f">Back: what runs behind it</div>
+<pre><b>app.post</b>("/api/orders", <b>async</b> (req, res) =&gt; {
+  <b>const</b> order = <b>await</b> Order.<i>create</i>(req.body);
+  <b>await</b> sendEmail(owner, order);
+  res.<i>status</i>(201).<i>json</i>(order);
+});</pre></div>
+  <h2>Scroll to peek behind the page.</h2>
+</div></section>
+
+<section class="about" id="about"><div class="wrap">
+  <p class="rv" id="rv"></p>
+  <figure class="me" id="me" style="margin-left:0;margin-bottom:0"><img id="meimg" alt="Portrait of Haider Ali"><div class="ph" id="meph">Your photo<small>Set DATA.photo in the code</small></div></figure>
+  <label class="btn" style="display:inline-block;margin-top:16px;cursor:pointer;background:none;color:inherit;border:1px solid #ffffff40;font-size:14px">Preview with your photo<input type="file" accept="image/*" id="mef" hidden></label>
+  <h3 class="d" style="font-size:clamp(24px,3.4vw,40px);margin-top:80px">The road so far</h3>
+  <div class="tl" id="tl"></div>
+</div></section>
+
+<section class="hs pin" id="hs"><div class="stick">
+  <h2>Selected work. Keep scrolling.</h2>
+  <div class="track" id="track"></div>
+</div></section>
+
+<section class="mission"><div class="wrap">
+  <h2>What do you need built?</h2>
+  <div class="tabs" id="tabs" role="tablist"></div>
+  <div class="panel" id="panel" role="tabpanel" aria-live="polite"></div>
+</div></section>
+
+<section class="facts" id="facts"><div class="wrap">
+  <div class="big" id="big">Let’s launch yours.</div>
+  <div class="nums" id="nums"></div>
+</div></section>
+
+<section class="contact" id="contact"><div class="wrap">
+  <h2 class="d" style="font-size:clamp(30px,5vw,64px);margin-bottom:26px">Tell me about it.</h2>
+  <form id="f">
+    <label>Your name<input name="n" required autocomplete="name"></label>
+    <label>Email<input name="e" type="email" required autocomplete="email"></label>
+    <label>Project type<select name="t" id="ptype"></select></label>
+    <label>Details<textarea name="m" required></textarea></label>
+    <button class="btn" type="submit">Send message</button>
+    <p id="msg" style="font-size:14px" aria-live="polite"></p>
+  </form>
+</div></section>
+</main>
+<footer><div class="wrap"><span>© 2026 Haider Ali</span><span>ha5743330@gmail.com</span></div></footer>
+
+<script>
+// All content in one object: swap it for data from your admin panel API later.
+var DATA={
+ stages:[["Idea","We talk about your business, your customers and what the site must do."],["Design","I sketch the layout and colors, so you see it before any code is written."],["Code","I build the pages and the server behind them, then test on phones and laptops."],["Live","Your site goes online, and you get an admin panel to update it yourself."]],
+ colors:["#101114","#2a2140","#0f2a2e","#2b2410"],
+ photo:"", // path or link to your portrait, e.g. "/haider.jpg"
+ // each project: [title, category, description, fallback color, image path (optional)]
+ projects:[["LMS platform","Web app","Courses, user roles and progress tracking.","#5b3fd1"],["Noor-ul-Quran","Web app","Turns Quran verses into shareable videos.","#0f7b6c"],["Neighborhood carpool","Concept","Ride sharing between Bara Kahu and Islamabad.","#c2410c"],["Your project","Next","This card is waiting for your case study.","#1f2937"]],
+ missions:[["Business website","Fast, mobile-friendly sites with an admin panel so you can edit content yourself.",["HTML and CSS","React","Admin panel"]],["Web app","Dashboards, learning platforms and booking tools with login and user roles.",["React","Node.js","MongoDB"]],["AI feature","Chatbots, search and automation added to your product.",["Python","Azure AI","APIs"]],["Something else","Tell me your idea and I’ll tell you honestly how I’d build it.",["Planning","Prototype"]]],
+ nums:[["4","Internships"],["1","Microsoft certification (AI-900)"],["3","Products in progress"]]
+};
+var $=function(i){return document.getElementById(i)},RM=matchMedia('(prefers-reduced-motion:reduce)').matches;
+if(RM)document.documentElement.classList.add('rm');
+var cl=function(v){return Math.max(0,Math.min(1,v))};
+// build content
+$('stages').innerHTML=DATA.stages.map(function(s){return'<div class="stage"><h2>'+s[0]+'</h2><p>'+s[1]+'</p></div>'}).join('');
+$('sdots').innerHTML=DATA.stages.map(function(s,i){return'<span>'+(i+1)+' '+s[0]+'</span>'}).join('');
+$('track').innerHTML=DATA.projects.map(function(p){return'<article class="proj">'+(p[4]?'<div class="shot img"><img src="'+p[4]+'" alt="'+p[0]+' screenshot" loading="lazy"></div>':'<div class="shot" style="background:'+p[3]+'"><u></u><s></s><s></s></div>')+'<h3>'+p[0]+'</h3><small>'+p[1]+'</small><p>'+p[2]+'</p></article>'}).join('');
+$('nums').innerHTML=DATA.nums.map(function(n){return'<div><b data-n="'+n[0]+'">'+n[0]+'</b>'+n[1]+'</div>'}).join('');
+DATA.missions.forEach(function(m,i){var b=document.createElement('button');b.textContent=m[0];b.setAttribute('role','tab');b.onclick=function(){pick(i)};$('tabs').appendChild(b);
+ var o=document.createElement('option');o.textContent=m[0];$('ptype').appendChild(o)});
+function pick(i){var m=DATA.missions[i];[].forEach.call($('tabs').children,function(b,k){b.setAttribute('aria-selected',k===i)});
+ $('panel').innerHTML='<h3>'+m[0]+'</h3><p>'+m[1]+'</p><div class="tags">'+m[2].map(function(t){return'<span>'+t+'</span>'}).join('')+'</div><a class="btn" href="#contact" id="go">Choose this</a>';
+ $('go').onclick=function(){$('ptype').selectedIndex=i}}
+pick(0);
+// about, timeline, marquee
+DATA.tl=[["Bara Kahu","Computer Science at intermediate level","Where I first learned to code, near Islamabad."],["BS Computer Science (AI)","BIMS, PMAS Arid Agriculture University","Four years of programming, databases and machine learning."],["Four internships","Web development and AI","Developers Hub (completed), plus FlyRank AI, Arch Technologies and Alkhidmat Foundation."],["July 2026","Microsoft Azure AI Fundamentals","AI-900 certified."],["Now","Building products and taking clients","An LMS, a Quran video app and this portfolio."]];
+$('mq').innerHTML=['React','Node.js','Express','MongoDB','Python','Next.js','Azure AI','Git','Tailwind'].concat(['React','Node.js','Express','MongoDB','Python','Next.js','Azure AI','Git','Tailwind']).map(function(t){return'<span>'+t+'</span>'}).join('');
+$('rv').innerHTML='I started in Bara Kahu and now build for businesses. I care about sites that load fast, look sharp and are easy to update. I studied AI, so I know where it helps and where it doesn’t.'.split(' ').map(function(w){return'<span>'+w+'</span> '}).join('');
+$('tl').innerHTML='<i></i>'+DATA.tl.map(function(t){return'<div><b>'+t[0]+'</b><h4>'+t[1]+'</h4><p>'+t[2]+'</p></div>'}).join('');
+var words=[].slice.call(document.querySelectorAll('#rv span')),tdots=[].slice.call($('tl').querySelectorAll('div'));
+if(!RM){var gl=document.createElement('div');gl.className='glow';document.body.appendChild(gl);addEventListener('pointermove',function(e){gl.style.transform='translate('+e.clientX+'px,'+e.clientY+'px)'},{passive:true});
+ document.querySelectorAll('.proj').forEach(function(p){var sh=p.querySelector('.shot');p.addEventListener('pointermove',function(e){var r=p.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;sh.style.transform='perspective(700px) rotateY('+x*12+'deg) rotateX('+-y*12+'deg)'});p.addEventListener('pointerleave',function(){sh.style.transform=''})})}
+function setPhoto(src){var i=$('meimg');i.src=src;i.style.display='block';$('meph').style.display='none'}
+if(DATA.photo)setPhoto(DATA.photo);
+$('mef').onchange=function(){var f=this.files[0];if(f)setPhoto(URL.createObjectURL(f))};
+// scroll effects
+var story=$('story'),split=$('split'),hs=$('hs'),track=$('track'),stages=document.querySelectorAll('.stage'),dots=$('sdots').children,big=$('big'),cur=-1,ticking=false;
+function prog(el){var r=el.getBoundingClientRect();return cl(-r.top/(el.offsetHeight-innerHeight))}
+function size(){if(RM)return;hs.style.height=(innerHeight+Math.max(0,track.scrollWidth-innerWidth))+'px'}
+function update(){ticking=false;
+ var d=document.documentElement,p=cl(scrollY/(d.scrollHeight-innerHeight));
+ document.querySelector('#prog i').style.width=p*100+'%';$('pct').textContent=Math.round(p*100)+'%';
+ if(RM)return;
+ var s=Math.min(3,Math.floor(prog(story)*4));
+ if(s!==cur){cur=s;[].forEach.call(stages,function(e,i){e.classList.toggle('on',i===s)});[].forEach.call(dots,function(e,i){e.classList.toggle('on',i===s)});story.style.background=DATA.colors[s]}
+ split.style.setProperty('--p',prog(split).toFixed(3));
+ track.style.transform='translateX('+(-prog(hs)*Math.max(0,track.scrollWidth-innerWidth))+'px)';
+ var ar=$('about').getBoundingClientRect(),nw=Math.round(cl((innerHeight*.85-ar.top)/(innerHeight*.9))*words.length);words.forEach(function(w,i){w.classList.toggle('on',i<nw)});
+ var tr=$('tl').getBoundingClientRect(),tp=cl((innerHeight*.7-tr.top)/tr.height);$('tl').style.setProperty('--t',tp);tdots.forEach(function(d,i){d.classList.toggle('on',tp>=i/tdots.length+.03)});
+ var mr=$('me').getBoundingClientRect();$('me').style.setProperty('--q',cl((innerHeight-mr.top)/(innerHeight*.75)).toFixed(3));
+ var fr=$('facts').getBoundingClientRect();
+}
+addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(update)}},{passive:true});
+addEventListener('resize',function(){size();update()});
+size();update();
+// counters count up once
+if(!RM&&'IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;io.unobserve(e.target);var el=e.target,n=+el.dataset.n,t0=performance.now();if(isNaN(n))return;
+ (function f(t){var k=cl((t-t0)/900);el.textContent=Math.round(n*k);if(k<1)requestAnimationFrame(f)})(t0)})},{threshold:.6});document.querySelectorAll('[data-n]').forEach(function(e){io.observe(e)})}
+// live Islamabad time
+function tick(){$('clock').textContent='Islamabad '+new Date().toLocaleTimeString('en-GB',{timeZone:'Asia/Karachi',hour:'2-digit',minute:'2-digit'})}
+tick();setInterval(tick,30000);
+// form opens email app until a real backend exists
+$('f').onsubmit=function(e){e.preventDefault();var f=e.target;
+ location.href='mailto:ha5743330@gmail.com?subject='+encodeURIComponent(f.t.value+' enquiry from '+f.n.value)+'&body='+encodeURIComponent('Name: '+f.n.value+'\n\n'+f.m.value);
+ $('msg').textContent='Your email app should open. If not, write to ha5743330@gmail.com.'};
+</script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Admin panel – Haider Ali portfolio</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;800&family=DM+Sans:wght@400;500&display=swap">
+<style>
+:root{--ink:#101114;--p:#171920;--line:#2a2d37;--fg:#f3efe6;--mute:#8d8a82;--y:#ffd23f;--red:#ff6b6b;--ok:#7bd88f;color-scheme:dark;box-sizing:border-box}
+*,*:before,*:after{box-sizing:inherit}
+body{margin:0;background:var(--ink);color:var(--fg);font:400 16px/1.5 "DM Sans",system-ui,sans-serif}
+h1,h2,h3{font-family:Unbounded,sans-serif;font-weight:800;letter-spacing:-.03em;margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--y);outline-offset:2px}
+.btn{background:var(--y);color:var(--ink);border:0;border-radius:99px;padding:10px 18px;font-weight:500;cursor:pointer}
+.btn.g{background:none;color:var(--fg);border:1px solid var(--line)}.btn.d{background:none;color:var(--red);border:1px solid #ff6b6b55}
+.btn.s{padding:6px 12px;font-size:14px}
+input,select,textarea{width:100%;background:var(--ink);border:1px solid var(--line);border-radius:10px;padding:12px}
+textarea{min-height:90px;resize:vertical}label{display:grid;gap:6px;font-size:14px;color:var(--mute);margin-bottom:14px}
+#login{min-height:100svh;display:grid;place-items:center;padding:22px}
+.box{background:var(--p);border:1px solid var(--line);border-radius:18px;padding:30px;width:min(400px,100%)}
+.box h1{font-size:26px;margin-bottom:6px}.box p{color:var(--mute);margin:0 0 22px;font-size:15px}
+#app{display:none;min-height:100svh}
+nav{position:fixed;z-index:5;background:var(--p);border-top:1px solid var(--line);left:0;right:0;bottom:0;display:flex;overflow-x:auto;padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px))}
+nav button{flex:1 0 auto;background:none;border:0;border-radius:10px;padding:10px 14px;color:var(--mute);cursor:pointer;white-space:nowrap;position:relative}
+nav button.on{background:#ffffff14;color:var(--y)}
+nav .brand,nav .out{display:none}
+main{padding:22px 18px calc(90px + env(safe-area-inset-bottom,0px));max-width:980px}
+@media(min-width:800px){nav{top:0;bottom:auto;right:auto;width:230px;height:100svh;flex-direction:column;border-top:0;border-right:1px solid var(--line);padding:20px 12px}
+ nav button{flex:none;text-align:left}nav .brand{display:block;font:800 18px Unbounded,sans-serif;padding:6px 14px 20px;color:var(--fg)}nav .out{display:block;margin-top:auto}main{margin-left:230px;padding:36px 36px 60px}}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:22px;flex-wrap:wrap}.top h2{font-size:clamp(22px,4vw,32px)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:26px}
+.stat{background:var(--p);border:1px solid var(--line);border-radius:14px;padding:18px}.stat b{display:block;font:800 34px Unbounded,sans-serif}.stat span{color:var(--mute);font-size:14px}
+.row{background:var(--p);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:10px;display:flex;justify-content:space-between;gap:14px;align-items:center}
+.row h3{font:500 17px "DM Sans",sans-serif;letter-spacing:0}.row p{margin:2px 0 0;color:var(--mute);font-size:14px}
+.acts{display:flex;gap:8px;flex-shrink:0}
+.tag{display:inline-block;font-size:12px;border-radius:99px;padding:2px 10px;background:#ffffff14;margin-right:6px}.tag.pub,.tag.rep{background:#7bd88f26;color:var(--ok)}.tag.new{background:#ffd23f26;color:var(--y)}
+.unread h3:before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--y);margin-right:8px}
+.msgbody{background:var(--p);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:14px;white-space:pre-wrap}
+.sw{display:flex;justify-content:space-between;align-items:center;background:var(--p);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:14px}
+dialog{border:1px solid var(--line);background:var(--p);color:var(--fg);border-radius:18px;padding:24px;width:min(480px,92vw)}dialog::backdrop{background:#000b}
+.empty{color:var(--mute);padding:30px;text-align:center;border:1px dashed var(--line);border-radius:14px}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--y);color:var(--ink);padding:10px 18px;border-radius:99px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:9}
+#toast.on{opacity:1}
+</style>
+</head>
+<body>
+<div id="login"><form class="box" id="lf">
+  <h1>Admin login</h1><p>Demo preview: type any password. In the real app, the password comes from your .env file.</p>
+  <label>Password<input type="password" id="pw" autocomplete="current-password" required></label>
+  <button class="btn" style="width:100%">Log in</button>
+</form></div>
+
+<div id="app">
+  <nav id="nav"><span class="brand">Portfolio admin</span></nav>
+  <main id="view"></main>
+</div>
+<dialog id="dlg"><form id="df" method="dialog"></form></dialog>
+<div id="toast" role="status"></div>
+
+<script>
+// Demo data lives in memory only. The real app will read and write MongoDB through API routes.
+var S={tab:'dash',
+ projects:[{id:1,title:'LMS platform',category:'Web app',description:'Courses, user roles and progress tracking.',tags:'React, Node.js, MongoDB',link:'',status:'Published'},{id:2,title:'Noor-ul-Quran',category:'Web app',description:'Turns Quran verses into shareable videos.',tags:'JavaScript',link:'https://github.com/ha5743330-ctrl/Noor-ul-Quran',status:'Published'},{id:3,title:'Neighborhood carpool',category:'Concept',description:'Ride sharing between Bara Kahu and Islamabad.',tags:'MERN, Maps',link:'',status:'Draft'}],
+ services:[{id:1,title:'Business websites',description:'Fast sites with an admin panel so you can edit content yourself.'},{id:2,title:'Web apps and dashboards',description:'Custom tools with login and user roles.'},{id:3,title:'AI integration',description:'Chatbots, search and automation.'}],
+ messages:[{id:1,name:'Sara Khan',email:'sara@example.com',type:'Business website',text:'Hi Haider, I run a bakery in Rawalpindi and need a website with online ordering. What would it cost?',date:'Today, 10:42',read:false,replied:false},{id:2,name:'Ahmed Raza',email:'ahmed@example.com',type:'Web app',text:'We need a small booking dashboard for our clinic. Can we talk this week?',date:'Yesterday',read:true,replied:true}],
+ internships:[{id:1,title:'FlyRank AI',period:'8 weeks, remote, unpaid',status:'In progress',description:''},{id:2,title:'Alkhidmat Foundation',period:'8 weeks, remote, volunteer',status:'In progress',description:''},{id:3,title:'Arch Technologies',period:'2 months, remote, unpaid',status:'In progress',description:''},{id:4,title:'Developers Hub Corporation',period:'8 weeks, remote, unpaid',status:'Completed',description:''}],
+ certs:[{id:1,title:'Microsoft Azure AI Fundamentals (AI-900)',issuer:'Microsoft',date:'July 2, 2026',link:'',image:''}],
+ education:[{id:1,title:'BS Computer Science (AI)',school:'BIMS, affiliated with PMAS Arid Agriculture University',period:'',description:''},{id:2,title:'Intermediate, Computer Science',school:'Islamabad Career College, Bharakahu',period:'',description:''}],
+ journey:[{id:1,title:'Bara Kahu',heading:'Computer Science at intermediate level',description:'Where I first learned to code, near Islamabad.'},{id:2,title:'BS Computer Science (AI)',heading:'BIMS, PMAS Arid Agriculture University',description:'Programming, databases and machine learning.'},{id:3,title:'Four internships',heading:'Web development and AI',description:'Developers Hub, FlyRank AI, Arch Technologies and Alkhidmat Foundation.'},{id:4,title:'July 2026',heading:'Microsoft Azure AI Fundamentals',description:'AI-900 certified.'},{id:5,title:'Now',heading:'Building products and taking clients',description:'An LMS, a Quran video app and this portfolio.'}],
+ text:{heroTitle:'Every website has two sides. I build both.',heroIntro:'I’m Haider, a full-stack developer in Islamabad. I make the part people see, and the part that keeps it running.',aboutText:'I started in Bara Kahu and now build for businesses. I care about sites that load fast, look sharp and are easy to update. I studied AI, so I know where it helps and where it doesn’t.',contactIntro:'Tell me what you’re building and where you need help.',footerText:'© 2026 Haider Ali'},
+ settings:{open:true,email:'ha5743330@gmail.com',github:'https://github.com/ha5743330-ctrl',linkedin:'https://www.linkedin.com/in/haider-ali-545970360',headline:'Websites and AI tools for growing businesses.'}};
+var F={internships:[['title','Company'],['role','Your role'],['period','Duration (e.g. 8 weeks, remote)'],['status','Status','s',['In progress','Completed']],['description','What you did','t']],certs:[['title','Certificate name'],['issuer','Issued by'],['date','Date'],['link','Verify link'],['image','Certificate image','f']],education:[['title','Degree or program'],['school','Institution'],['period','Years'],['description','Details','t']],journey:[['title','Label (place or year)'],['heading','Heading'],['description','Story','t']],projects:[['title','Title'],['category','Category'],['description','Description','t'],['tags','Tags (comma separated)'],['link','Live or GitHub link'],['image','Project image','f'],['status','Status','s',['Draft','Published']]],
+ services:[['title','Title'],['description','Description','t']]};
+var $=function(i){return document.getElementById(i)},id=function(){return Date.now()};
+var esc=function(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+function shrink(file,max,cb){if(!file)return;var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){var k=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=im.width*k;c.height=im.height*k;c.getContext('2d').drawImage(im,0,0,c.width,c.height);cb(c.toDataURL('image/jpeg',.8))};im.src=r.result};r.readAsDataURL(file)}
+function textForm(){var t=S.text,L=[['heroTitle','Hero headline'],['heroIntro','Hero text','t'],['aboutText','About text','t'],['contactIntro','Contact text','t'],['footerText','Footer text']];
+ return'<div class="top"><h2>Site text</h2></div><form id="tf">'+L.map(function(f){return'<label>'+f[1]+(f[2]?'<textarea name="'+f[0]+'">'+esc(t[f[0]])+'</textarea>':'<input name="'+f[0]+'" value="'+esc(t[f[0]])+'">')+'</label>'}).join('')+'<button class="btn">Save text</button></form>'}
+function toast(t){var e=$('toast');e.textContent=t;e.classList.add('on');setTimeout(function(){e.classList.remove('on')},1800)}
+var TABS=[['dash','Dashboard'],['projects','Projects'],['services','Services'],['internships','Internships'],['certs','Certificates'],['education','Education'],['journey','Journey'],['text','Site text'],['messages','Messages'],['settings','Settings']];
+var LBL={projects:'Projects',services:'Services',internships:'Internships',certs:'Certificates',education:'Education',journey:'Journey'},NAME={projects:'project',services:'service',internships:'internship',certs:'certificate',education:'education entry',journey:'journey point'};
+function nav(){var n=S.messages.filter(function(m){return!m.read}).length;
+ $('nav').innerHTML='<span class="brand">Portfolio admin</span>'+TABS.map(function(t){return'<button data-t="'+t[0]+'" class="'+(S.tab===t[0]?'on':'')+'">'+t[1]+(t[0]==='messages'&&n?' ('+n+')':'')+'</button>'}).join('')+'<button class="out" data-t="out">Log out</button>'}
+$('nav').onclick=function(e){var t=e.target.dataset.t;if(!t)return;if(t==='out'){location.reload();return}S.tab=t;S.open=null;render()};
+function list(k,label){var a=S[k];
+ return'<div class="top"><h2>'+label+'</h2><button class="btn" data-add="'+k+'">+ Add</button></div>'+(a.length?a.map(function(x){return'<div class="row"><div style="display:flex;gap:12px;align-items:center">'+(x.image?'<img src="'+x.image+'" alt="" style="width:52px;height:52px;object-fit:cover;border-radius:10px">':'')+'<div><h3>'+esc(x.title)+'</h3><p>'+(x.status?'<span class="tag '+((x.status==='Published'||x.status==='Completed')?'pub':'')+'">'+x.status+'</span>':'')+esc([x.category,x.role,x.issuer,x.school,x.heading,x.period,x.date,x.description].filter(Boolean)[0]||'')+'</p></div></div><div class="acts"><button class="btn g s" data-edit="'+k+':'+x.id+'">Edit</button><button class="btn d s" data-del="'+k+':'+x.id+'">Delete</button></div></div>'}).join(''):'<div class="empty">Nothing here yet. Tap Add to create the first one.</div>')}
+function render(){nav();var v=$('view'),h='';
+ if(S.tab==='dash'){var un=S.messages.filter(function(m){return!m.read}).length;
+  h='<div class="top"><h2>Welcome back, Haider</h2></div><div class="cards"><div class="stat"><b>'+S.projects.length+'</b><span>Projects</span></div><div class="stat"><b>'+S.projects.filter(function(p){return p.status==='Published'}).length+'</b><span>Published</span></div><div class="stat"><b>'+S.services.length+'</b><span>Services</span></div><div class="stat"><b>'+un+'</b><span>New messages</span></div></div><h3 style="font-size:18px;margin-bottom:12px">Latest messages</h3>'+
+  (S.messages.length?S.messages.slice(0,3).map(function(m){return'<div class="row'+(m.read?'':' unread')+'"><div><h3>'+esc(m.name)+'</h3><p>'+esc(m.text.slice(0,70))+'…</p></div><button class="btn g s" data-msg="'+m.id+'">Open</button></div>'}).join(''):'<div class="empty">No messages yet.</div>')}
+ else if(LBL[S.tab])h=list(S.tab,LBL[S.tab]);
+ else if(S.tab==='text')h=textForm();
+ else if(S.tab==='messages'){var m=S.messages.filter(function(x){return x.id===S.open})[0];
+  h=m?'<div class="top"><h2>'+esc(m.name)+'</h2><button class="btn g s" data-back="1">Back</button></div><p style="color:var(--mute)">'+esc(m.email)+' · '+esc(m.type)+' · '+esc(m.date)+'</p><div class="msgbody">'+esc(m.text)+'</div><div class="acts"><a class="btn" href="mailto:'+esc(m.email)+'" data-rep="'+m.id+'">Reply by email</a><button class="btn g" data-rep="'+m.id+'">Mark as replied</button><button class="btn d" data-delmsg="'+m.id+'">Delete</button></div>'
+  :'<div class="top"><h2>Messages</h2></div>'+(S.messages.length?S.messages.map(function(x){return'<div class="row'+(x.read?'':' unread')+'"><div><h3>'+esc(x.name)+'</h3><p><span class="tag '+(x.replied?'rep':x.read?'':'new')+'">'+(x.replied?'Replied':x.read?'Read':'New')+'</span>'+esc(x.type)+' · '+esc(x.date)+'</p></div><button class="btn g s" data-msg="'+x.id+'">Open</button></div>'}).join(''):'<div class="empty">No messages yet. Contact form messages will appear here.</div>')}
+ else{var s=S.settings;h='<div class="top"><h2>Settings</h2></div><div class="sw"><div><b>Taking new projects</b><p style="margin:0;color:var(--mute);font-size:14px">Shows the green badge on your site.</p></div><button class="btn '+(s.open?'':'g')+'" id="tg">'+(s.open?'On':'Off')+'</button></div><div class="sw"><div style="display:flex;gap:14px;align-items:center">'+(s.photo?'<img src="'+s.photo+'" alt="" style="width:64px;height:80px;object-fit:cover;border-radius:12px">':'<div style="width:64px;height:80px;border-radius:12px;background:#ffffff14;display:grid;place-items:center;color:var(--mute);font-size:12px">No photo</div>')+'<div><b>Profile photo</b><p style="margin:0;color:var(--mute);font-size:14px">Shown in the About section with a scroll effect.</p></div></div><label class="btn g s" style="margin:0;cursor:pointer">Upload<input type="file" accept="image/*" id="pf" hidden></label></div><form id="sf"><label>Headline<input name="headline" value="'+esc(s.headline)+'"></label><label>Email<input name="email" type="email" value="'+esc(s.email)+'"></label><label>GitHub<input name="github" value="'+esc(s.github)+'"></label><label>LinkedIn<input name="linkedin" value="'+esc(s.linkedin)+'"></label><label>CV link (PDF)<input name="cv" placeholder="Paste a link to your CV"></label><button class="btn">Save settings</button></form>'}
+ v.innerHTML=h;var tg=$('tg');if(tg)tg.onclick=function(){S.settings.open=!S.settings.open;render();toast('Saved')};
+ var tf=$('tf');if(tf)tf.onsubmit=function(e){e.preventDefault();new FormData(tf).forEach(function(v,k){S.text[k]=v});toast('Text saved')};
+ var pf=$('pf');if(pf)pf.onchange=function(){shrink(pf.files[0],900,function(u){S.settings.photo=u;render();toast('Photo updated')})};
+ var sf=$('sf');if(sf)sf.onsubmit=function(e){e.preventDefault();new FormData(sf).forEach(function(v,k){S.settings[k]=v});toast('Settings saved')}}
+function form(k,x){x=x||{};$('df').dataset.k=k;$('df').dataset.id=x.id||'';
+ $('df').innerHTML='<h3 style="font-size:20px;margin-bottom:16px">'+(x.id?'Edit':'Add')+' '+(NAME[k]||'item')+'</h3>'+F[k].map(function(f){var v=esc(x[f[0]]||'');
+  return'<label>'+f[1]+(f[2]==='t'?'<textarea name="'+f[0]+'">'+v+'</textarea>':f[2]==='f'?'<input type="file" accept="image/*" id="fi"><input type="hidden" name="'+f[0]+'" id="fh" value="'+v+'"><img id="fp" alt="" style="max-width:100%;max-height:150px;border-radius:10px;margin-top:6px;'+(v?'':'display:none')+'" src="'+v+'">':f[2]==='s'?'<select name="'+f[0]+'">'+f[3].map(function(o){return'<option'+(x[f[0]]===o?' selected':'')+'>'+o+'</option>'}).join('')+'</select>':'<input name="'+f[0]+'" value="'+v+'"'+(f[0]==='title'?' required':'')+'>')+'</label>'}).join('')+
+  '<div class="acts"><button class="btn" value="save">Save</button><button class="btn g" type="button" id="cx">Cancel</button></div>';
+ $('cx').onclick=function(){$('dlg').close()};var fi=$('fi');if(fi)fi.onchange=function(){shrink(fi.files[0],1200,function(u){$('fh').value=u;$('fp').src=u;$('fp').style.display='block'})};$('dlg').showModal()}
+$('df').onsubmit=function(e){e.preventDefault();var f=e.target,k=f.dataset.k,o={};new FormData(f).forEach(function(v,n){o[n]=v});
+ if(f.dataset.id){var i=S[k].findIndex(function(x){return x.id==f.dataset.id});S[k][i]=Object.assign(S[k][i],o)}else{o.id=id();S[k].unshift(o)}
+ $('dlg').close();render();toast('Saved')};
+$('view').onclick=function(e){var t=e.target,d=t.dataset;
+ if(d.add)form(d.add);
+ if(d.edit){var p=d.edit.split(':');form(p[0],S[p[0]].filter(function(x){return x.id==p[1]})[0])}
+ if(d.del){var q=d.del.split(':');if(confirm('Delete this item?')){S[q[0]]=S[q[0]].filter(function(x){return x.id!=q[1]});render();toast('Deleted')}}
+ if(d.msg){S.tab='messages';S.open=+d.msg;S.messages.forEach(function(m){if(m.id===S.open)m.read=true});render()}
+ if(d.back){S.open=null;render()}
+ if(d.rep){S.messages.forEach(function(m){if(m.id==d.rep){m.replied=true;m.read=true}});if(t.tagName==='BUTTON'){render();toast('Marked as replied')}}
+ if(d.delmsg&&confirm('Delete this message?')){S.messages=S.messages.filter(function(m){return m.id!=d.delmsg});S.open=null;render();toast('Deleted')}};
+$('lf').onsubmit=function(e){e.preventDefault();$('login').style.display='none';$('app').style.display='block';render()};
+</script>
+</body>
+</html>

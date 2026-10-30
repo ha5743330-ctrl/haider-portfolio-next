@@ -1,0 +1,18 @@
+# env (keep only the example)
+.env*
+!.env.example
+
+# deps and build
+node_modules/
+.next/
+out/
+build/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+.vercel
+
+# os / editor
+.DS_Store
+Thumbs.db
+*.log
