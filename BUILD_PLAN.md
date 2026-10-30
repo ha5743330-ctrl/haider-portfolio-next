@@ -50,11 +50,11 @@ All except Message and Profile have an `order` number (for sorting).
 - **Education:** title, school, period, description
 - **Journey:** label, heading, description
 - **Message:** name, email, type, text, read, replied, createdAt
-- **Profile** (single document): photo, heroTitle, heroIntro, aboutText, contactIntro, footerText, headline, email, github, linkedin, cvLink, open (boolean, "Taking new projects")
+- **Profile** (single document): photo, heroTitle, heroIntro, aboutText, contactIntro, footerText, headline, email, phone, github, linkedin, youtube, cvLink, open (boolean, "Taking new projects"), githubUsername (default "ha5743330-ctrl"), projectsLimit (2-6, default 4), githubFill (boolean, default true)
 
 ## 4. API routes
 
-- Public GET: `/api/projects` (published only), `/api/services`, `/api/internships`, `/api/certificates`, `/api/education`, `/api/journey`, `/api/profile`
+- Public GET: `/api/projects` (published DB projects by order, then, if githubFill is on, public GitHub repos from `lib/github.ts` up to projectsLimit, deduped by link; each item has `source`: "db" or "github"), `/api/services`, `/api/internships`, `/api/certificates`, `/api/education`, `/api/journey`, `/api/profile`
 - Public POST: `/api/messages` (validated, rate limited per IP)
 - Admin only: POST, PUT, DELETE on every collection; PUT `/api/profile`; GET, PUT, DELETE `/api/messages`
 - Auth: POST `/api/login`, POST `/api/logout`
@@ -84,7 +84,7 @@ Test: `npm run dev`, open `/api/health`, expect `ok`.
 **Step 2: Models, API and seed.** Create the models, all public and admin API routes (admin routes unprotected for now but structured for middleware), and a seed script (`npm run seed`) that loads Section 8.
 Test: run seed, open `/api/projects` and `/api/profile`, see the data.
 
-**Step 3: Public site.** Port `design/haider-scroll-portfolio.html` to React components using API data. Keep every effect: preloader-free hero reveal, progress bar, Idea/Design/Code/Live pinned story, front/back split, about word reveal, portrait reveal, timeline, horizontal projects, mission picker, counters, live Islamabad clock, glow, card tilt. The numbers section is derived from the database: internship count, certificate count, published project count.
+**Step 3: Public site.** Port `design/haider-scroll-portfolio.html` to React components using API data. Keep every effect: preloader-free hero reveal, progress bar, Idea/Design/Code/Live pinned story, front/back split, about word reveal, portrait reveal, timeline, horizontal projects, mission picker, counters, live Islamabad clock, glow, card tilt. The projects section ends with a "Show more on GitHub" button linking to profile.github; the project counter uses the DB published count, not the GitHub items. The numbers section is derived from the database: internship count, certificate count, published project count.
 Test: compare with the design on a phone and a laptop.
 
 **Step 4: Login.** Build `/admin/login`, login and logout APIs, the signed cookie and the middleware from Section 5.

@@ -27,6 +27,9 @@ const profile = {
   youtube: "https://youtube.com/@techwithhaider2",
   cvLink: "/files/Haider_Ali_CV.pdf",
   open: true,
+  githubUsername: "ha5743330-ctrl",
+  projectsLimit: 4,
+  githubFill: true,
 };
 
 const projects = ordered([

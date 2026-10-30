@@ -98,4 +98,7 @@ export const profileSchema = z.object({
   youtube: link.optional(),
   cvLink: link.optional(),
   open: z.boolean().optional(),
+  githubUsername: text(100).optional(),
+  projectsLimit: z.number().int().min(2).max(6).optional(),
+  githubFill: z.boolean().optional(),
 });

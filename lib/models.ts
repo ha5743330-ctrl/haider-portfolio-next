@@ -99,6 +99,9 @@ export const Profile = make(
       youtube: str,
       cvLink: str,
       open: { type: Boolean, default: true }, // "Taking new projects"
+      githubUsername: { ...str, default: "ha5743330-ctrl" },
+      projectsLimit: { type: Number, min: 2, max: 6, default: 4 },
+      githubFill: { type: Boolean, default: true },
     },
     opts,
   ),
